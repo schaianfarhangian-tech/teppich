@@ -1,27 +1,37 @@
-// public/js/app.js
-const API_URL = "/api/rugs";
+// ---- Cloudinary-Konfiguration (nur Frontend-URL-Aufbau) ----
+const CLOUDINARY_CLOUD_NAME = "dqgfwfxuw";
+const CLOUDINARY_BASE_FOLDER = "teppiche";
 
-/* ---------------- DOM ---------------- */
-const $tbody = document.getElementById("rug-tbody");
-const $pager = document.getElementById("pager");
+/**
+ * Baut aus einem DB-Pfad wie
+ *   "images/nain_trading/1073-24860-141x72/1073-24860-141x72-01.jpg"
+ * eine Cloudinary-URL:
+ *   https://res.cloudinary.com/<cloud>/image/upload/f_auto,q_auto,w_800/teppiche/nain_trading/...
+ *
+ * - Entfernt führendes "images/"
+ * - Kodiert jedes Segment sicher (Leerzeichen, Sonderzeichen)
+ * - Lässt echte http(s)-URLs unverändert (falls bereits absolut)
+ */
+function toCloudinaryUrl(imagePath) {
+  if (!imagePath) return "";
 
-const $filterName = document.getElementById("filter-namen");
+  // Falls bereits eine absolute URL vorliegt (Sonderfall)
+  if (/^https?:\/\//i.test(imagePath)) return imagePath;
 
-// ---- Sticky-Offset dynamisch anpassen (Filterhöhe messen) ----
-function updateFilterOffset() {
-  const bar = document.querySelector('.filter-bar');
-  if (!bar) return;
-  const h = bar.getBoundingClientRect().height;
-  const styles = getComputedStyle(bar);
-  const mb = parseFloat(styles.marginBottom) || 0;
-  document.documentElement.style.setProperty('--filter-height', `${Math.ceil(h)}px`);
-  document.documentElement.style.setProperty('--filter-gap', `${Math.ceil(mb)}px`);
+  // "images/..." entfernen & führende Slashes bereinigen
+  const rel = String(imagePath)
+    .replace(/^\/?images\//i, "")
+    .replace(/^\/+/, "");
+
+  // Jedes Pfadsegment URL-sicher kodieren
+  const safeRel = rel
+    .split("/")
+    .map((s) => encodeURIComponent(s))
+    .join("/");
+
+  // Transformationen: automatische Formate/Qualität + Breite begrenzen
+  return `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/upload/f_auto,q_auto,w_800/${CLOUDINARY_BASE_FOLDER}/${safeRel}`;
 }
-window.addEventListener('load', updateFilterOffset);
-window.addEventListener('resize', () => {
-  clearTimeout(updateFilterOffset._t);
-  updateFilterOffset._t = setTimeout(updateFilterOffset, 120);
-});
 
 
 // NEU: getrennte Felder für Länge & Breite
@@ -67,7 +77,7 @@ function renderTable(rows) {
 
   const html = rows
     .map((r) => {
-      const imgSrc = r.imagePath ? `/${r.imagePath}` : "";
+      const imgSrc = r.imagePath ? toCloudinaryUrl(r.imagePath) : "";
       const alt = r.name || r.rugNumber;
       return `
       <tr>
