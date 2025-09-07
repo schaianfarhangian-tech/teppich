@@ -1,0 +1,21 @@
+{
+  "name": "teppiche",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "postinstall": "prisma generate"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "express": "^4",
+    "cors": "^2",
+    "@prisma/client": "^5",
+    "xlsx": "^0"
+  },
+  "devDependencies": {
+    "prisma": "^5",
+    "nodemon": "^3"
+  }
+}

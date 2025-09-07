@@ -1,0 +1,29 @@
+# Node.js dependencies
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# macOS Finder files
+.DS_Store
+
+# Env-Dateien (lokale Secrets)
+.env
+
+# Prisma generierte Dateien
+/generated/prisma
+
+public/images/
+data/
+*.xlsx
+
+node_modules
+.env
+/generated/prisma
+public/images/
+data/
+*.xlsx
+.DS_Store
+
+
+# Logs
+*.log

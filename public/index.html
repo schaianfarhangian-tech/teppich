@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Teppich-Übersicht</title>
+  <link rel="stylesheet" href="css/meins.css" />
+</head>
+<body>
+  <main class="wrap">
+    <h1 class="page-title">Teppich-Übersicht</h1>
+
+    <!-- Filterleiste (ersetzen) -->
+<div class="filter-bar" style="position:sticky; top:0; z-index:20; background:#fff; padding:.5rem 0; border-bottom:1px solid #eee; display:flex; gap:1rem; flex-wrap:wrap; align-items:flex-end;">
+  <!-- Namen -->
+  <label style="display:flex; flex-direction:column; gap:.25rem;">
+    <span>Namen:</span>
+    <select id="filter-namen" style="min-width:160px;">
+      <option value="">Alle</option>
+    </select>
+  </label>
+
+  <!-- Länge (cm) -->
+  <div style="display:flex; flex-direction:column; gap:.25rem;">
+    <span><strong>Länge (cm)</strong></span>
+    <div style="display:flex; gap:.5rem;">
+      <input type="number" id="filter-laenge-von" placeholder="von" min="0" style="width:100px;">
+      <input type="number" id="filter-laenge-bis" placeholder="bis" min="0" style="width:100px;">
+    </div>
+  </div>
+
+  <!-- Breite (cm) -->
+  <div style="display:flex; flex-direction:column; gap:.25rem;">
+    <span><strong>Breite (cm)</strong></span>
+    <div style="display:flex; gap:.5rem;">
+      <input type="number" id="filter-breite-von" placeholder="von" min="0" style="width:100px;">
+      <input type="number" id="filter-breite-bis" placeholder="bis" min="0" style="width:100px;">
+    </div>
+  </div>
+
+  <!-- Preis (€) -->
+  <div style="display:flex; flex-direction:column; gap:.25rem;">
+    <span><strong>Preis (€)</strong></span>
+    <div style="display:flex; gap:.5rem;">
+      <input type="number" id="filter-preis-von" placeholder="von" min="0" style="width:100px;">
+      <input type="number" id="filter-preis-bis" placeholder="bis" min="0" style="width:100px;">
+    </div>
+  </div>
+</div>
+
+
+    <!-- Tabelle mit fixiertem Kopf -->
+    <div class="table-wrap">
+      <table class="rug-table">
+        <thead>
+          <tr>
+            <th>Bild</th>
+            <th>Teppich&nbsp;Nr.</th>
+            <th>Namen</th>
+            <th>Größe</th>
+            <th>Farbe</th>
+            <th class="price-col">Preis</th>
+          </tr>
+        </thead>
+        <!-- WICHTIG: leer, wird per app.js gefüllt -->
+        <tbody id="rug-tbody"></tbody>
+      </table>
+    </div>
+    <div id="pager" class="pager"></div>
+  </main>
+
+  <!-- NUR DIESER Script-Tag, KEIN weiterer Inline-Code -->
+  <script src="js/app.js" type="module"></script>
+</body>
+</html>

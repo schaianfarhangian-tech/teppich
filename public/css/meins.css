@@ -1,0 +1,201 @@
+/* ===========================
+   Grundlayout & Variablen
+   =========================== */
+:root {
+  --bg: #ffffff;
+  --text: #1f2937;
+  --muted: #6b7280;
+  --border: #e5e7eb;
+  --border-strong: #cbd5e1;
+  --accent: #111827;
+  --row-alt: #fafafa;
+
+  /* Sticky Offsets (werden von JS überschrieben) */
+  --filter-height: 3.25rem; /* Fallback */
+  --filter-gap: 8px;        /* Abstand zwischen Filter & Tabelle */
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.4;
+}
+
+/* ===========================
+   Seite
+   =========================== */
+.wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px 48px;
+}
+
+.page-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin: 16px 0 8px;
+}
+
+/* ===========================
+   Filterleiste (sticky)
+   =========================== */
+.filter-bar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #fff;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  align-items: center;
+
+  /* Optik & Höhe */
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 1px 0 rgba(0,0,0,0.03);
+  min-height: var(--filter-height);
+
+  /* Abstand zur Tabelle */
+  margin-bottom: var(--filter-gap);
+}
+
+.filter-bar label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.filter-bar input[type="number"],
+.filter-bar select {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 36px;
+  padding: 6px 10px;
+  font-size: 0.95rem;
+  color: var(--text);
+  background: #fff;
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  outline: none;
+}
+
+.filter-bar input[type="number"]:focus,
+.filter-bar select:focus {
+  border-color: #94a3b8;
+  box-shadow: 0 0 0 3px rgba(148,163,184,0.25);
+}
+
+/* Doppelte Inputs (von/bis) enger zusammen */
+.filter-bar input[type="number"] + input[type="number"] { margin-left: 6px; }
+
+/* ===========================
+   Tabelle (Header sticky)
+   =========================== */
+.table-wrap {
+  position: relative;
+  margin-top: 0;        /* Abstand kommt von .filter-bar */
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: visible;    /* wichtig für sticky */
+  background: #fff;
+}
+
+.rug-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+/* Head klebt direkt unter der Filterleiste */
+.rug-table thead{
+  position: sticky;
+  top: calc(var(--filter-height) + var(--filter-gap));
+  z-index: 900;                 /* über Rows, unter Filter */
+  background: #f9fafb;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.03);
+}
+.rug-table thead th{
+  background: inherit;
+  color: #111827;
+  text-align: left;
+  font-weight: 600;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border-strong);
+}
+
+.rug-table th:first-child,
+.rug-table td:first-child { padding-left: 14px; }
+.rug-table th:last-child,
+.rug-table td:last-child { padding-right: 14px; }
+
+.rug-table tbody td {
+  padding: 10px 12px;
+  vertical-align: middle;
+  border-bottom: 1px solid var(--border);
+}
+
+.rug-table tbody tr:nth-child(even) { background: var(--row-alt); }
+.rug-table tbody tr:hover { background: #f3f4f6; }
+
+/* Preis rechtsbündig */
+.price-col {
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* Bilder */
+.rug-table img {
+  display: block;
+  max-width: 200px;
+  height: auto;
+  object-fit: contain;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: #fff;
+}
+
+/* Platzhalter */
+.no-image {
+  width: 200px;
+  height: 120px;
+  background: #eef2f7;
+  color: #8a94a6;
+  border: 1px dashed #cbd5e1;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===========================
+   Pager
+   =========================== */
+.pager {
+  padding: 10px 12px;
+  color: var(--muted);
+  font-size: 0.95rem;
+  border-top: 1px solid var(--border);
+  background: #fff;
+}
+
+/* ===========================
+   Responsive
+   =========================== */
+@media (max-width: 720px) {
+  .page-title { font-size: 1.35rem; }
+  .filter-bar { grid-template-columns: 1fr; }
+  .rug-table img,
+  .no-image { max-width: 150px; height: auto; }
+}
+
+/* ===========================
+   Utility
+   =========================== */
+.text-muted { color: var(--muted); }
