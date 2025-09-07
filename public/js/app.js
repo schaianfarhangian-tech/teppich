@@ -1,17 +1,37 @@
 // ---- Cloudinary-Konfiguration (nur Frontend-URL-Aufbau) ----
+// --- Konfiguration ---
+const API_URL = "/api/rugs";
 const CLOUDINARY_CLOUD_NAME = "dqgfwfxuw";
-const CLOUDINARY_BASE_FOLDER = "teppiche";
 
-/**
- * Baut aus einem DB-Pfad wie
- *   "images/nain_trading/1073-24860-141x72/1073-24860-141x72-01.jpg"
- * eine Cloudinary-URL:
- *   https://res.cloudinary.com/<cloud>/image/upload/f_auto,q_auto,w_800/teppiche/nain_trading/...
- *
- * - Entfernt führendes "images/"
- * - Kodiert jedes Segment sicher (Leerzeichen, Sonderzeichen)
- * - Lässt echte http(s)-URLs unverändert (falls bereits absolut)
- */
+// --- DOM-Elemente (fehlen bei dir gerade) ---
+const $tbody = document.getElementById("rug-tbody");
+const $pager = document.getElementById("pager");
+const $filterName = document.getElementById("filter-namen");
+
+// (falls du die Sticky-Bar nutzt)
+function updateFilterOffset() {
+  const bar = document.querySelector('.filter-bar');
+  if (!bar) return;
+  const h = bar.getBoundingClientRect().height;
+  const styles = getComputedStyle(bar);
+  const mb = parseFloat(styles.marginBottom) || 0;
+  document.documentElement.style.setProperty('--filter-height', `${Math.ceil(h)}px`);
+  document.documentElement.style.setProperty('--filter-gap', `${Math.ceil(mb)}px`);
+}
+window.addEventListener('load', updateFilterOffset);
+window.addEventListener('resize', () => {
+  clearTimeout(updateFilterOffset._t);
+  updateFilterOffset._t = setTimeout(updateFilterOffset, 120);
+});
+
+// --- Bild-URL immer über Cloudinary ---
+function toCloudinaryUrl(imagePath) {
+  if (!imagePath) return "";
+  const rel = imagePath.replace(/^images\//, "");
+  return `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/upload/f_auto,q_auto,w_800/teppiche/${rel}`;
+}
+
+
 function toCloudinaryUrl(imagePath) {
   if (!imagePath) return "";
 
